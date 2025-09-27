@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feedback Form</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: url("https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80") 
+        no-repeat center center/cover;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      padding: 2rem;
+      border-radius: 20px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    .card h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    label {
+      display: block;
+      margin: 0.8rem 0 0.3rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    select, input[type="text"], textarea, input[type="file"] {
+      width: 100%;
+      padding: 0.6rem;
+      border: none;
+      border-radius: 10px;
+      outline: none;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    button {
+      width: 100%;
+      padding: 0.8rem;
+      background: #007BFF;
+      color: #fff;
+      font-size: 1rem;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    @media (max-width: 480px) {
+      .card {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Feedback Form</h2>
+    <form id="feedbackForm">
+      <!-- Kategori Utama -->
+      <label for="mainCategory">Kategori Utama</label>
+      <select id="mainCategory" name="mainCategory" required>
+        <option value="" disabled selected>Pilih...</option>
+        <option>SAFE SPACE</option>
+        <option>CLEAN ENVIRONMENT</option>
+        <option>CLEAR INFORMATION</option>
+        <option>EFFICIENT PROCESS</option>
+        <option>POSITIVE INTERACTION</option>
+        <option>RELIABLE FACILITIES</option>
+      </select>
+
+      <!-- Subkategori -->
+      <label for="subCategory">Subkategori</label>
+      <select id="subCategory" name="subCategory" required>
+        <option value="" disabled selected>Pilih...</option>
+        <option>PEOPLE</option>
+        <option>PROCESS</option>
+        <option>PREMISES</option>
+      </select>
+
+      <!-- Deskripsi -->
+      <label for="description">Deskripsi</label>
+      <textarea id="description" name="description" placeholder="Tuliskan deskripsi..." required></textarea>
+
+      <!-- Upload Foto -->
+      <label for="photo">Upload Foto</label>
+      <input type="file" id="photo" name="photo" accept="image/*" capture="environment">
+
+      <button type="submit">SUBMIT</button>
+    </form>
+  </div>
+
+  <script>
+    const scriptURL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL"; // ganti dengan URL Web App dari Google Apps Script
+    const form = document.getElementById("feedbackForm");
+
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+
+      const fileInput = document.getElementById("photo");
+      const formData = new FormData(form);
+
+      if (fileInput.files[0]) {
+        // Upload file ke Google Drive via Apps Script (opsional, jika script mendukung)
+        formData.append("photoName", fileInput.files[0].name);
+      }
+
+      fetch(scriptURL, { method: "POST", body: formData })
+        .then(response => {
+          alert("Data berhasil dikirim!");
+          form.reset();
+        })
+        .catch(error => {
+          alert("Terjadi kesalahan: " + error.message);
+        });
+    });
+  </script>
+</body>
+</html>
