@@ -87,8 +87,8 @@
   <div class="card">
     <h2>IMPACX SRG</h2>
     <form id="IMPACXSRG">
-      <label for="firstCategory">Touchpoint Area</label>
-      <select id="firstCategory" name="firstCategory" required>
+      <label for="first">Touchpoint Area</label>
+      <select id="first" name="firstCategory" required>
         <option value="" disabled selected>Pilih...</option>
         <option>PARKING</option>
         <option>MODA TRANSPORTASI</option>
@@ -133,7 +133,7 @@
   </div>
 
   <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbw4SBUOhfM66bjhl5R6-WSYxf8NI6t36S5QHpEPKvgeVJ2ic26M2cvP6ZuCqnq64uLU/exec"; // URL Web App dari Apps Script
+    const scriptURL = "https://script.google.com/macros/s/AKfycbwoo2FahwoUjje09bC9B_rCZYKHu9CB750KqYlq0Tfigla_YLaDWVwzZiGtjsc2Oigr/exec"; // URL Web App dari Apps Script
     const form = document.getElementById("IMPACXSRG");
 
     form.addEventListener("submit", e => {
@@ -148,6 +148,7 @@
           const base64 = reader.result.split(",")[1];
 
           const data = {
+            firstCategory: form.firstCategory.value,
             mainCategory: form.mainCategory.value,
             subCategory: form.subCategory.value,
             description: form.description.value,
@@ -160,7 +161,7 @@
             body: new URLSearchParams(data)
           })
           .then(() => {
-            alert("Data + Foto berhasil dikirim!");
+            alert("Form berhasil dikirim!");
             form.reset();
           })
           .catch(err => alert("Error: " + err));
@@ -168,8 +169,9 @@
         reader.readAsDataURL(file);
       } else {
         const data = {
-          mainCategory: form.mainCategory.value,
-          subCategory: form.subCategory.value,
+          first: form.first.value,
+          main: form.main.value,
+          sub: form.sub.value,
           description: form.description.value
         };
 
@@ -178,7 +180,7 @@
           body: new URLSearchParams(data)
         })
         .then(() => {
-          alert("Data berhasil dikirim (tanpa foto)!");
+          alert("Form berhasil dikirim (tanpa foto)!");
           form.reset();
         })
         .catch(err => alert("Error: " + err));
