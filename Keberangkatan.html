@@ -85,8 +85,8 @@
 </head>
 <body>
   <div class="card">
-    <h2>IMPACX SRG</h2>
-    <form id="IMPACX SRG">
+    <h2>FeedbackForm</h2>
+    <form id="FeedbackForm">
       <label for="firstCategory">Touchpoint Area</label>
       <select id="firstCategory" name="firstCategory" required>
         <option value="" disabled selected>Pilih...</option>
@@ -134,7 +134,7 @@
 
   <script>
     const scriptURL = "https://script.google.com/macros/s/AKfycbw4SBUOhfM66bjhl5R6-WSYxf8NI6t36S5QHpEPKvgeVJ2ic26M2cvP6ZuCqnq64uLU/exec"; // URL Web App dari Apps Script
-    const form = document.getElementById("IMPACX SRG");
+    const form = document.getElementById("FeedbackForm");
 
     form.addEventListener("submit", e => {
       e.preventDefault();
