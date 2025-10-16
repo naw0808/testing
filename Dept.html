@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IMPACX Form</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: url("1.JPG") no-repeat center center/cover;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      padding: 2rem;
+      border-radius: 20px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    .card h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    label {
+      display: block;
+      margin: 0.8rem 0 0.3rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    select, textarea, input[type="file"] {
+      width: 100%;
+      padding: 0.6rem;
+      border: none;
+      border-radius: 10px;
+      outline: none;
+      margin-bottom: 0.3rem;
+      font-size: 0.9rem;
+    }
+
+    .info-text {
+      font-size: 0.8rem;
+      color: #333;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 8px;
+      padding: 6px 10px;
+      margin-bottom: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    button {
+      width: 100%;
+      padding: 0.8rem;
+      background: #007BFF;
+      color: #fff;
+      font-size: 1rem;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    @media (max-width: 480px) {
+      .card {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>IMPACX SRG</h2>
+    <form id="IMPACXSRG">
+      <label for="first">Touchpoint Area</label>
+      <select id="first" name="firstCategory" required>
+        <option value="" disabled selected>Pilih...</option>
+        <option>PARKING</option>
+        <option>MODA TRANSPORTASI</option>
+        <option>DROP OFF</option>
+        <option>CHECK IN</option>
+        <option>COMMERCIAL AREA</option>
+        <option>SECURITY CHECK POINT</option>
+        <option>IMIGRATION</option>
+        <option>BOARDING LOUNGE</option>
+        <option>AVIOBRIDGE</option>
+        <option>SHUTTLE BOS</option>
+      </select>
+
+      <label for="mainCategory">Element Generic Service</label>
+      <select id="mainCategory" name="mainCategory" required>
+        <option value="" disabled selected>Pilih...</option>
+        <option value="SAFE SPACE">SAFE SPACE</option>
+        <option value="CLEAN ENVIRONMENT">CLEAN ENVIRONMENT</option>
+        <option value="CLEAR INFORMATION">CLEAR INFORMATION</option>
+        <option value="EFFICIENT PROCESS">EFFICIENT PROCESS</option>
+        <option value="POSITIVE INTERACTION">POSITIVE INTERACTION</option>
+        <option value="RELIABLE FACILITIES">RELIABLE FACILITIES</option>
+      </select>
+
+      <div id="infoMainCategory" class="info-text">Pilih kategori untuk melihat deskripsi.</div>
+
+      <label for="subCategory">Pillar Category</label>
+      <select id="subCategory" name="subCategory" required>
+        <option value="" disabled selected>Pilih...</option>
+        <option>PEOPLE</option>
+        <option>PROCESS</option>
+        <option>PREMISES</option>
+      </select>
+
+      <label for="description">Deskripsi Temuan</label>
+      <textarea id="description" name="description" placeholder="Tuliskan deskripsi..." required></textarea>
+
+      <label for="photo">Upload Foto</label>
+      <input type="file" id="photo" name="photo" accept="image/*" capture="environment">
+
+      <button type="submit">SUBMIT</button>
+    </form>
+  </div>
+
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbyRbfEOFCMy0ewG3nRqYYuFVzS-tzmOwnxx0bTh4sqA4WL05yOHZcVS1BEiZIaFVy2z/exec";
+    const form = document.getElementById("IMPACXSRG");
+
+    // 🔹 Deskripsi untuk setiap kategori
+    const infoTexts = {
+      "SAFE SPACE": "Lingkungan aman dan nyaman bagi pengguna, bebas dari potensi bahaya atau ancaman.",
+      "CLEAN ENVIRONMENT": "Kebersihan area terjaga, termasuk fasilitas umum dan permukaan yang sering disentuh.",
+      "CLEAR INFORMATION": "Informasi mudah dipahami, tersedia dan konsisten di berbagai titik layanan.",
+      "EFFICIENT PROCESS": "Proses pelayanan cepat, teratur, dan meminimalkan waktu tunggu pengguna.",
+      "POSITIVE INTERACTION": "Petugas memberikan pelayanan ramah, sopan, dan membantu pengguna dengan baik.",
+      "RELIABLE FACILITIES": "Fasilitas berfungsi dengan baik, terawat, dan mudah diakses oleh semua pengguna."
+    };
+
+    const mainCategory = document.getElementById("mainCategory");
+    const infoMainCategory = document.getElementById("infoMainCategory");
+
+    // Ubah teks deskripsi otomatis saat pilihan berubah
+    mainCategory.addEventListener("change", () => {
+      const value = mainCategory.value;
+      infoMainCategory.textContent = infoTexts[value] || "Pilih kategori untuk melihat deskripsi.";
+    });
+
+    // Kirim data ke Apps Script
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+
+      const fileInput = document.getElementById("photo");
+      const file = fileInput.files[0];
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = function () {
+          const base64 = reader.result.split(",")[1];
+
+          const data = {
+            firstCategory: form.firstCategory.value,
+            mainCategory: form.mainCategory.value,
+            subCategory: form.subCategory.value,
+            description: form.description.value,
+            photo: base64,
+            fileName: file.name
+          };
+
+          fetch(scriptURL, {
+            method: "POST",
+            body: new URLSearchParams(data)
+          })
+          .then(() => {
+            alert("Form berhasil dikirim!");
+            form.reset();
+            infoMainCategory.textContent = "Pilih kategori untuk melihat deskripsi.";
+          })
+          .catch(err => alert("Error: " + err));
+        };
+        reader.readAsDataURL(file);
+      } else {
+        const data = {
+          firstCategory: form.firstCategory.value,
+          mainCategory: form.mainCategory.value,
+          subCategory: form.subCategory.value,
+          description: form.description.value
+        };
+
+        fetch(scriptURL, {
+          method: "POST",
+          body: new URLSearchParams(data)
+        })
+        .then(() => {
+          alert("Form berhasil dikirim (tanpa foto)!");
+          form.reset();
+          infoMainCategory.textContent = "Pilih kategori untuk melihat deskripsi.";
+        })
+        .catch(err => alert("Error: " + err));
+      }
+    });
+  </script>
+</body>
+</html>
